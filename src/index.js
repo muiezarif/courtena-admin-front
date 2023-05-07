@@ -1,31 +1,36 @@
-/**
+/*!
+
 =========================================================
-* Soft UI Dashboard React - v4.0.0
+* Purity UI Dashboard - v1.0.1
 =========================================================
 
-* Product Page: https://www.creative-tim.com/product/soft-ui-dashboard-react
-* Copyright 2022 Creative Tim (https://www.creative-tim.com)
+* Product Page: https://www.creative-tim.com/product/purity-ui-dashboard
+* Copyright 2021 Creative Tim (https://www.creative-tim.com)
+* Licensed under MIT (https://github.com/creativetimofficial/purity-ui-dashboard/blob/master/LICENSE.md)
 
-Coded by www.creative-tim.com
+* Design by Creative Tim & Coded by Simmmple
 
- =========================================================
+=========================================================
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
 
+*/
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter } from "react-router-dom";
-import App from "App";
+import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
 
-// Soft UI Dashboard React Context Provider
-import { SoftUIControllerProvider } from "context";
+import AuthLayout from "layouts/Auth.js";
+import AdminLayout from "layouts/Admin.js";
+import RTLLayout from "layouts/RTL.js";
 
 ReactDOM.render(
-  <BrowserRouter>
-    <SoftUIControllerProvider>
-      <App />
-    </SoftUIControllerProvider>
-  </BrowserRouter>,
+  <HashRouter>
+    <Switch>
+      <Route path={`/auth`} component={AuthLayout} />
+      <Route path={`/admin`} component={AdminLayout} />
+      <Route path={`/rtl`} component={RTLLayout} />
+      <Redirect from={`/`} to="/auth/signin" />
+    </Switch>
+  </HashRouter>,
   document.getElementById("root")
 );
