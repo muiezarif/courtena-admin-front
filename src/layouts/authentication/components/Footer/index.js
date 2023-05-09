@@ -86,7 +86,7 @@ function Footer() {
         </Grid>
         <Grid item xs={12} lg={8} sx={{ textAlign: "center" }}>
           <SoftTypography variant="body2" color="secondary">
-            Copyright &copy; {(new Date().getFullYear())} Soft by Courtena.
+            Copyright &copy; {(new Date().getFullYear())} by Courtena.
           </SoftTypography>
         </Grid>
       </Grid>

@@ -32,12 +32,42 @@ import CoverLayout from "layouts/authentication/components/CoverLayout";
 
 // Images
 import curved9 from "assets/images/curved-images/curved-6.jpg";
-
-function SignIn() {
+import {connect, useDispatch} from "react-redux"
+import { loginAdmin } from "../../../actions";
+import courtena from "api/courtena";
+import { useNavigate } from "react-router-dom";
+function SignIn(props) {
   const [rememberMe, setRememberMe] = useState(true);
-
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  let navigate = useNavigate();
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
-
+  const handleSubmit = async (e) => {
+    const data = {email:email,password:password}
+    // const data = {}
+    console.log(email)
+    console.log(password)
+    await courtena.post("/auth/login-admin",{...data},{
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Accept': '*/*'
+    }
+    }).then((response) => {
+      console.log(response.data)
+      if(response.data.success){
+        navigate("/dashboard")
+      }else{
+        
+      }
+      
+    }).catch(err => console.log(err.message));
+    
+    // this.props.loginAdmin(data).then(() => {
+    //   console.log("API hit")
+    // }).catch(err => {
+    //   console.log(err)
+    // })
+  }
   return (
     <CoverLayout
       title="Welcome back"
@@ -51,7 +81,7 @@ function SignIn() {
               Email
             </SoftTypography>
           </SoftBox>
-          <SoftInput type="email" placeholder="Email" />
+          <SoftInput name="email" onChange={(val) => setEmail(val.target.value)} type="email" placeholder="Email" />
         </SoftBox>
         <SoftBox mb={2}>
           <SoftBox mb={1} ml={0.5}>
@@ -59,7 +89,7 @@ function SignIn() {
               Password
             </SoftTypography>
           </SoftBox>
-          <SoftInput type="password" placeholder="Password" />
+          <SoftInput name="password" onChange={(val) => setPassword(val.target.value)} type="password" placeholder="Password" />
         </SoftBox>
         <SoftBox display="flex" alignItems="center">
           <Switch checked={rememberMe} onChange={handleSetRememberMe} />
@@ -73,7 +103,7 @@ function SignIn() {
           </SoftTypography>
         </SoftBox>
         <SoftBox mt={4} mb={1}>
-          <SoftButton variant="gradient" color="info" fullWidth>
+          <SoftButton onClick={() => handleSubmit()} variant="gradient" color="info" fullWidth>
             sign in
           </SoftButton>
         </SoftBox>
@@ -87,6 +117,7 @@ function SignIn() {
               color="info"
               fontWeight="medium"
               textGradient
+              
             >
               Sign up
             </SoftTypography>
@@ -96,5 +127,14 @@ function SignIn() {
     </CoverLayout>
   );
 }
-
-export default SignIn;
+const mapStateToProps = (state) =>{
+  return {
+      responseData:state.auth.user
+  };
+}
+const mapDispatchToProps = (dispatch) =>{
+  return {
+      login:dispatch(loginAdmin())
+  };
+}
+export default connect(mapStateToProps,{loginAdmin})(SignIn);

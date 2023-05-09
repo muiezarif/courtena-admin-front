@@ -46,7 +46,7 @@ import gradientLineChartData from "layouts/dashboard/data/gradientLineChartData"
 import { useSoftUIController, setMiniSidenav, setOpenConfigurator } from "context";
 import routes from "routes";
 // Images
-import brand from "assets/images/logo-ct.png";
+import brand from "assets/images/courtena-logo-black-nobg.png";
 import Sidenav from "examples/Sidenav";
 import Configurator from "examples/Configurator";
 function Dashboard() {
@@ -101,7 +101,7 @@ function Dashboard() {
             <Sidenav
               color={sidenavColor}
               brand={brand}
-              brandName="Soft UI Dashboard"
+              brandName="Courtena"
               routes={routes}
               onMouseEnter={handleOnMouseEnter}
               onMouseLeave={handleOnMouseLeave}
