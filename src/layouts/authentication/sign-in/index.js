@@ -13,7 +13,7 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState } from "react";
+import { useState,useEffect } from "react";
 
 // react-router-dom components
 import { Link } from "react-router-dom";
@@ -36,17 +36,17 @@ import {connect, useDispatch} from "react-redux"
 import { loginAdmin } from "../../../actions";
 import courtena from "api/courtena";
 import { useNavigate } from "react-router-dom";
+import SoftAlert from "components/SoftAlert";
 function SignIn(props) {
   const [rememberMe, setRememberMe] = useState(true);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error,setError] = useState(false)
+  const [errorMessage,setErrorMessage] = useState("")
   let navigate = useNavigate();
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
   const handleSubmit = async (e) => {
     const data = {email:email,password:password}
-    // const data = {}
-    console.log(email)
-    console.log(password)
     await courtena.post("/auth/login-admin",{...data},{
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -55,26 +55,34 @@ function SignIn(props) {
     }).then((response) => {
       console.log(response.data)
       if(response.data.success){
+        localStorage.setItem('admin', JSON.stringify(response.data.result));
+        localStorage.setItem('token', response.data.result.token);
+        localStorage.setItem('adminRemainLoggedIn', true);
         navigate("/dashboard")
       }else{
-        
+        setError(true)
+        setErrorMessage(response.data.message)
       }
       
     }).catch(err => console.log(err.message));
-    
-    // this.props.loginAdmin(data).then(() => {
-    //   console.log("API hit")
-    // }).catch(err => {
-    //   console.log(err)
-    // })
   }
+  useEffect(() => {
+    const loggedIn = Boolean(localStorage.getItem('adminRemainLoggedIn'));
+    console.log(loggedIn)
+    if(loggedIn){
+      if(loggedIn == true){
+        navigate("/dashboard")
+      }
+    }
+  },[])
   return (
     <CoverLayout
       title="Welcome back"
-      description="Enter your email and password to sign in"
+      description=""
       image={curved9}
     >
       <SoftBox component="form" role="form">
+        {error ? <SoftAlert color="error" dismissible onClick={() => setError(false)} > {errorMessage}</SoftAlert> : null}
         <SoftBox mb={2}>
           <SoftBox mb={1} ml={0.5}>
             <SoftTypography component="label" variant="caption" fontWeight="bold">
@@ -91,7 +99,7 @@ function SignIn(props) {
           </SoftBox>
           <SoftInput name="password" onChange={(val) => setPassword(val.target.value)} type="password" placeholder="Password" />
         </SoftBox>
-        <SoftBox display="flex" alignItems="center">
+        {/* <SoftBox display="flex" alignItems="center">
           <Switch checked={rememberMe} onChange={handleSetRememberMe} />
           <SoftTypography
             variant="button"
@@ -101,11 +109,26 @@ function SignIn(props) {
           >
             &nbsp;&nbsp;Remember me
           </SoftTypography>
-        </SoftBox>
+        </SoftBox> */}
         <SoftBox mt={4} mb={1}>
           <SoftButton onClick={() => handleSubmit()} variant="gradient" color="info" fullWidth>
             sign in
           </SoftButton>
+        </SoftBox>
+        <SoftBox mt={3} textAlign="center">
+          
+            <SoftTypography
+              component={Link}
+              to="/authentication/forgot-password"
+              variant="button"
+              color="info"
+              fontWeight="medium"
+              textGradient
+              
+            >
+              Forgot Password ?
+            </SoftTypography>
+          
         </SoftBox>
         <SoftBox mt={3} textAlign="center">
           <SoftTypography variant="button" color="text" fontWeight="regular">

@@ -41,6 +41,7 @@ import createCache from "@emotion/cache";
 
 // Soft UI Dashboard React routes
 import routes from "routes";
+import allRoutes from "allRoutes";
 
 // Soft UI Dashboard React contexts
 import { useSoftUIController, setMiniSidenav, setOpenConfigurator } from "context";
@@ -54,7 +55,25 @@ export default function App() {
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const [rtlCache, setRtlCache] = useState(null);
   const { pathname } = useLocation();
+  // useEffect(() => {
+  //   const cleanup = () => {
+  //     const loggedIn = Boolean(localStorage.getItem('adminRemainLoggedIn'));
+  //   if(loggedIn){
+  //     if(loggedIn == false){
+  //       localStorage.removeItem('admin');
+  //       localStorage.removeItem('token');
+  //       localStorage.removeItem('adminRemainLoggedIn');
+  //     }
+  //   }
+      
+  //   };
 
+  //   window.addEventListener('beforeunload', cleanup);
+
+  //   return () => {
+  //     window.removeEventListener('beforeunload', cleanup);
+  //   };
+  // }, []);
   // Cache for the rtl
   useMemo(() => {
     const cacheRtl = createCache({
@@ -152,7 +171,7 @@ export default function App() {
         )}
         {layout === "vr" && <Configurator />}
         <Routes>
-          {getRoutes(routes)}
+          {getRoutes(allRoutes)}
           <Route path="/" element={<Navigate to="/authentication/sign-in" />} />
         </Routes>
       </ThemeProvider>
@@ -176,7 +195,7 @@ export default function App() {
       )}
       {layout === "vr" && <Configurator />}
       <Routes>
-        {getRoutes(routes)}
+        {getRoutes(allRoutes)}
         <Route path="/" element={<Navigate to="/authentication/sign-in" />} />
       </Routes>
     </ThemeProvider>
