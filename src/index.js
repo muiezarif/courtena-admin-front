@@ -26,7 +26,7 @@ const store = createStore(reducers,composeEnhancers(applyMiddleware(reduxThunk))
 // Soft UI Dashboard React Context Provider
 import { SoftUIControllerProvider } from "context";
 import SignIn from "layouts/authentication/sign-in";
-
+ import "./global.css"
 ReactDOM.render(
   <Provider store={store}>
   <BrowserRouter>

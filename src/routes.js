@@ -56,6 +56,7 @@ import CreditCard from "examples/Icons/CreditCard";
 import Cube from "examples/Icons/Cube";
 import Categories from "layouts/categories";
 import ForgotPassword from "layouts/authentication/forgotpassword";
+import Partners from "layouts/partners";
 
 const routes = [
   {
@@ -82,7 +83,7 @@ const routes = [
     key: "partners",
     route: "/partners",
     icon: <Shop size="12px" />,
-    component: <Dashboard />,
+    component: <Partners />,
     noCollapse: true,
   },
   {
@@ -157,15 +158,15 @@ const routes = [
   //   component: <VirtualReality />,
   //   noCollapse: true,
   // },
-  {
-    type: "collapse",
-    name: "RTL",
-    key: "rtl",
-    route: "/rtl",
-    icon: <Settings size="12px" />,
-    component: <RTL />,
-    noCollapse: true,
-  },
+  // {
+  //   type: "collapse",
+  //   name: "RTL",
+  //   key: "rtl",
+  //   route: "/rtl",
+  //   icon: <Settings size="12px" />,
+  //   component: <RTL />,
+  //   noCollapse: true,
+  // },
   { type: "title", title: "Account Pages", key: "account-pages" },
   {
     type: "collapse",

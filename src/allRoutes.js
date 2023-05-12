@@ -1,5 +1,6 @@
 
 import Dashboard from "layouts/dashboard";
+import Dashboard2 from "layouts/dashboard/Dashboard2";
 import Tables from "layouts/tables";
 import Billing from "layouts/billing";
 import VirtualReality from "layouts/virtual-reality";
@@ -19,6 +20,15 @@ import CreditCard from "examples/Icons/CreditCard";
 import Cube from "examples/Icons/Cube";
 import Categories from "layouts/categories";
 import ForgotPassword from "layouts/authentication/forgotpassword";
+import Partners from "layouts/partners";
+import AddPartners from "layouts/partners/AddPartner";
+import Subscriptions from "layouts/subscriptions";
+import AddSubscription from "layouts/subscriptions/AddSubscription";
+import Customers from "layouts/customers";
+import Bookings from "layouts/bookings";
+import Settlements from "layouts/settlements";
+import Reports from "layouts/reports";
+
 
 const allRoutes = [
   {
@@ -27,7 +37,7 @@ const allRoutes = [
     key: "dashboard",
     route: "/dashboard",
     icon: <Shop size="12px" />,
-    component: <Dashboard />,
+    component: <Dashboard2 />,
     noCollapse: true,
   },
   {
@@ -45,7 +55,16 @@ const allRoutes = [
     key: "partners",
     route: "/partners",
     icon: <Shop size="12px" />,
-    component: <Dashboard />,
+    component: <Partners />,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "AddPartners",
+    key: "addpartners",
+    route: "/partners/add-partners",
+    icon: <Shop size="12px" />,
+    component: <AddPartners />,
     noCollapse: true,
   },
   {
@@ -54,7 +73,7 @@ const allRoutes = [
     key: "customers",
     route: "/customers",
     icon: <Shop size="12px" />,
-    component: <Dashboard />,
+    component: <Customers />,
     noCollapse: true,
   },
   {
@@ -63,7 +82,7 @@ const allRoutes = [
     key: "bookings",
     route: "/bookings",
     icon: <Shop size="12px" />,
-    component: <Dashboard />,
+    component: <Bookings />,
     noCollapse: true,
   },
   {
@@ -72,7 +91,7 @@ const allRoutes = [
     key: "settlements",
     route: "/settlements",
     icon: <Shop size="12px" />,
-    component: <Dashboard />,
+    component: <Settlements />,
     noCollapse: true,
   },
   {
@@ -81,7 +100,16 @@ const allRoutes = [
     key: "subscriptions",
     route: "/subscriptions",
     icon: <Shop size="12px" />,
-    component: <Dashboard />,
+    component: <Subscriptions />,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Add Subscriptions",
+    key: "add-subscriptions",
+    route: "/subscriptions/add-subscription",
+    icon: <Shop size="12px" />,
+    component: <AddSubscription />,
     noCollapse: true,
   },
   {
@@ -90,7 +118,7 @@ const allRoutes = [
     key: "reports",
     route: "/reports",
     icon: <Shop size="12px" />,
-    component: <Dashboard />,
+    component: <Reports />,
     noCollapse: true,
   },
   {
@@ -120,15 +148,15 @@ const allRoutes = [
   //   component: <VirtualReality />,
   //   noCollapse: true,
   // },
-  {
-    type: "collapse",
-    name: "RTL",
-    key: "rtl",
-    route: "/rtl",
-    icon: <Settings size="12px" />,
-    component: <RTL />,
-    noCollapse: true,
-  },
+  // {
+  //   type: "collapse",
+  //   name: "RTL",
+  //   key: "rtl",
+  //   route: "/rtl",
+  //   icon: <Settings size="12px" />,
+  //   component: <RTL />,
+  //   noCollapse: true,
+  // },
   { type: "title", title: "Account Pages", key: "account-pages" },
   {
     type: "collapse",
