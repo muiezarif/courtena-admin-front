@@ -155,6 +155,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
         onClick={() => {
           // Clear the user data and token from localStorage
             localStorage.removeItem('admin');
+            localStorage.removeItem('partner');
             localStorage.removeItem('token');
             localStorage.removeItem('adminRemainLoggedIn');
             navigate("/authentication/sign-in")

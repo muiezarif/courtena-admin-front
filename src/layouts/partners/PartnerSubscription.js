@@ -33,22 +33,27 @@ import Table from "examples/Tables/Table";
 import { Avatar, Backdrop, Chip, CircularProgress, Grid, Icon } from "@mui/material";
 import SoftButton from "components/SoftButton";
 // import partnersTableData from "./data/partnersTableData";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
 import { useEffect,useState } from "react";
 import courtena from "api/courtena";
 import SoftAvatar from "components/SoftAvatar";
 import SoftBadge from "components/SoftBadge";
 import { DeleteForeverOutlined, EditOutlined,ViewAgenda,EyeArrowLeft } from "@mui/icons-material";
 import { red } from "@mui/material/colors";
-function Partners() {
+import Bill from "layouts/billing/components/Bill";
+import CustomBill from "layouts/billing/components/Bill/CustomBill";
+function PartnerSubscription() {
     const [sports,setSports] = useState([])
+    const [partnerSub,setPartnerSub] = useState({})
+    const [partnerInfo,setPartnerInfo] = useState({})
+    const [subscriptionType,setSubscriptionType] = useState({})
     const [backdrop,setBackdrop] = useState(false)
     let navigate = useNavigate();
+    let location = useLocation();
     const partnersTableData = {
         columns: [
-          { name: "username", align: "center" },
+          { name: "name", align: "center" },
           { name: "email", align: "center" },
-          { name: "subscribed", align: "center" },
           { name: "details", align: "center" },
           { name: "action", align: "center" },
         ],
@@ -60,7 +65,7 @@ function Partners() {
         var partnerInfo = JSON.parse(partnerInfoString)
         setBackdrop(true)
         // const data = {name:name,city:city,address:address,description:description,cheapestPrice:price,venuePhone:contactNum,postalCode:1234,amenities:{cafeteria:cafeteria,changeRoom:changingRoom,disabledAccess:disabledAccess,freeParking:freeParking,lockers:lockers,materialRenting:materialRenting,privateParking:privateParking,restaurant:restaurant,snackbar:snackbar,store:store,vendingMachine:vendingMachine,wifi:wifi},timing:{mondayOn:mondayOpen,mondayFrom:mondayFrom,mondayTo:mondayTo,tuesdayOn:tuesdayOpen,tuesdayFrom:tuesdayFrom,tuesdayTo:tuesdayTo,wedOn:wednesdayOpen,wedFrom:wedFrom,wedTo:wedTo,thursdayOn:thursdayOpen,thursdayFrom:thursdayFrom,thursdayTo:thursdayTo,fridayOn:fridayOpen,fridayFrom:friFrom,fridayTo:friTo,satOn:saturdayOpen,satFrom:satFrom,satTo:satTo,sunOn:sundayOpen,sunFrom:sunFrom,sunTo:sunTo,holidayOn:holidayOpen,holidayFrom:holidayFrom,holidayTo:holidayTo},partner:partnerInfo._id}
-        await courtena.get("/users/partners/",{
+        await courtena.get("/partner/subscription/get-partner-subscription-info/"+location.state.partnerId,{
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
             'Accept': '*/*',
@@ -72,70 +77,11 @@ function Partners() {
             
             let newSports = []
             if(response.data.result){
-            response.data.result.map((item) => {
-                console.log(item._id)
-                newSports.push({
-                    username:(<Chip label={item.username}/>),
-                    email:(<Chip label={item.email}/>),
-                    subscribed:(<Chip label={""+item.isSubscribed}/>),
-                    details:(<Grid className="cursor-pointer" item xs={6} md={6} lg={6}>
-                      <SoftTypography
-                        component="a"
-                        variant="caption"
-                        color="secondary"
-                        fontWeight="medium"
-                          onClick={() => {navigate("/partners/partner-details",{state:{partnerId:item._id}})}}
-                      >
-                        <ViewAgenda fontSize="medium" color="secondary"/>
-                      </SoftTypography></Grid>),
-                    action: (
-                        <SoftBox className="cursor-pointer">
-                            <Grid container spacing={2}>
-                                <Grid item xs={6} md={6} lg={6}>
-                            <SoftTypography
-                          component="a"
-                          variant="caption"
-                          color="secondary"
-                          fontWeight="medium"
-                            onClick={async() => {
-                                setBackdrop(true)
-                                await courtena.delete("/users/partner/"+item._id+"/delete/",{
-                                    headers: {
-                                      'Content-Type': 'application/x-www-form-urlencoded',
-                                      'Accept': '*/*',
-                                      'Authorization': partnerInfo.token
-                                  }
-                                  }).then((response) => {
-                                    console.log(response.data)
-                                        if(response.data.success){
-                                            setBackdrop(false)
-                                            getSports()
-                                        }else{
-                                            setBackdrop(false)
-                                        }
-                                  }).catch((err) => {
-                                    console.log(err)
-                                  })
-                            }}
-                        >
-                          <DeleteForeverOutlined fontSize="medium" sx={{ color: 'red' }}/>
-                        </SoftTypography></Grid>
-                        {/* <Grid item xs={6} md={6} lg={6}>
-                        <SoftTypography
-                          component="a"
-                          variant="caption"
-                          color="secondary"
-                          fontWeight="medium"
-                            onClick={() => {navigate("/sports/edit-sport",{state:{sportId:item._id}})}}
-                        >
-                          <EditOutlined fontSize="medium" color="secondary"/>
-                        </SoftTypography></Grid> */}
-                        </Grid>
-                        </SoftBox>
-                        
-                      ),
-                })
-            })}
+              setPartnerSub(response.data.result.partnerSubscription)
+              setPartnerInfo(response.data.result.partner)
+              setSubscriptionType(response.data.result.subscriptionType)
+
+          }
             setSports(newSports)
             setBackdrop(false)
             
@@ -149,26 +95,26 @@ function Partners() {
       }
   useEffect( () => {
     getSports()
-    // return
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+
   },[])
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
       <SoftBox py={3}>
         <SoftBox mb={3}>
-          <Card> 
-            <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
-                <Grid item xs={6} md={6}>
-                    <SoftTypography variant="h6">Partners Data</SoftTypography>
-                </Grid>
-              <Grid item xs={6} md={6}>
+          {/* <Card>  */}
+            {/* <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}> */}
+                {/* <Grid item xs={6} md={6}>
+                    <SoftTypography variant="h6">Partner Subscription</SoftTypography>
+                </Grid> */}
+              {/* <Grid item xs={6} md={6}>
                 <SoftButton onClick={() => navigate("/partners/add-partner")} variant="gradient" color="dark">
                 <Icon sx={{ fontWeight: "bold" }}>add</Icon>
                 &nbsp;Add Partner
                 </SoftButton>
-                </Grid>
-            </SoftBox>
+                </Grid> */}
+            {/* </SoftBox> */}
 
             <SoftBox
               sx={{
@@ -180,10 +126,79 @@ function Partners() {
                 },
               }}
             >
-              <Table columns={columns} rows={sports} />
+              <SoftBox
+        component="li"
+        display="flex"
+        justifyContent="space-between"
+        alignItems="flex-start"
+        bgColor="grey-100"
+        borderRadius="lg"
+        p={3}
+        mt={2}
+      >
+        <SoftBox width="100%" display="flex" flexDirection="column">
+          <SoftBox
+            display="flex"
+            justifyContent="space-between"
+            alignItems={{ xs: "flex-start", sm: "center" }}
+            flexDirection={{ xs: "column", sm: "row" }}
+            mb={2}
+          >
+            <SoftTypography variant="button" fontWeight="medium" textTransform="capitalize">
+              {partnerInfo.username ? partnerInfo.username : null}
+            </SoftTypography>
+          </SoftBox>
+          <SoftBox mb={1} lineHeight={0}>
+            <SoftTypography variant="caption" color="text">
+              Subscription Name:&nbsp;&nbsp;&nbsp;
+              <SoftTypography variant="caption" fontWeight="medium" textTransform="capitalize">
+                {subscriptionType.name}
+              </SoftTypography>
+            </SoftTypography>
+          </SoftBox>
+          <SoftBox mb={1} lineHeight={0}>
+            <SoftTypography variant="caption" color="text">
+              Subscription Price:&nbsp;&nbsp;&nbsp;
+              <SoftTypography variant="caption" fontWeight="medium">
+                {subscriptionType.price}
+              </SoftTypography>
+            </SoftTypography>
+          </SoftBox>
+          <SoftBox mb={1} lineHeight={0}>
+          <SoftTypography variant="caption" color="text">
+            Subscription Tier:&nbsp;&nbsp;&nbsp;
+            <SoftTypography variant="caption" fontWeight="medium">
+              {subscriptionType.tier}
+            </SoftTypography>
+          </SoftTypography>
+          </SoftBox>
+          <SoftBox mb={1} lineHeight={0}>
+          <SoftTypography variant="caption" color="text">
+            Created at:&nbsp;&nbsp;&nbsp;
+            <SoftTypography variant="caption" fontWeight="medium">
+              {new Date(partnerSub.createdAt).toLocaleString('en-US', {year: 'numeric', month: '2-digit',day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'})}
+              {/* {new Intl.DateTimeFormat('en-US', {year: 'numeric', month: '2-digit',day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'}).format(partnerSub.createdAt)} */}
+            </SoftTypography>
+          </SoftTypography>
+          </SoftBox>
+          <SoftBox mb={1} lineHeight={0}>
+          <SoftTypography variant="caption" color="text">
+            Updated at:&nbsp;&nbsp;&nbsp;
+            <SoftTypography variant="caption" fontWeight="medium">
+            {new Date(partnerSub.updatedAt).toLocaleString('en-US', {year: 'numeric', month: '2-digit',day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'})}
+            </SoftTypography>
+          </SoftTypography>
+          </SoftBox>
+        </SoftBox>
+      </SoftBox>
+              {/* <CustomBill
+              name={partnerInfo.username}
+              company="viking burrito"
+              email="oliver@burrito.com"
+              vat="FRB1235476"/> */}
               
             </SoftBox>
-          </Card>
+          {/* </Card> */}
         </SoftBox>
         <Backdrop
         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
@@ -197,4 +212,4 @@ function Partners() {
   );
 }
 
-export default Partners;
+export default PartnerSubscription;

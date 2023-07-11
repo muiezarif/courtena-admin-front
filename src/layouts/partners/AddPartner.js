@@ -12,7 +12,7 @@ Coded by www.creative-tim.com
 
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
-
+import React from "react";
 // @mui material components
 import Card from "@mui/material/Card";
 
@@ -28,18 +28,59 @@ import Table from "examples/Tables/Table";
 
 // Data
 // import partnersTableData from "layouts/tables/data/partnersTableData";
-import projectsTableData from "layouts/tables/data/projectsTableData";
-import { Grid, Icon } from "@mui/material";
-import SoftButton from "components/SoftButton";
-import partnersTableData from "./data/partnersTableData";
-import { useNavigate } from "react-router-dom";
-import SoftAlert from "components/SoftAlert";
-import SoftInput from "components/SoftInput";
 
-function AddPartners() {
-  const { columns, rows } = partnersTableData;
-  const { columns: prCols, rows: prRows } = projectsTableData;
+import { Backdrop, Checkbox, CircularProgress, FormControl, FormControlLabel, FormGroup, Grid, Icon, InputLabel, MenuItem, Select, Switch,  } from "@mui/material";
+import SoftButton from "components/SoftButton";
+
+import { useNavigate } from "react-router-dom";
+import SoftInput from "components/SoftInput";
+import { useEffect, useState } from "react";
+import { Dropzone, FileMosaic} from "@dropzone-ui/react"
+import courtena from "api/courtena";
+// import OpeningHours from "./components/OpeningHours";
+import "../../global.css"
+import { ArrowDropDown } from "@mui/icons-material";
+function AddPartner() {
+  const [username,setUsername] = useState("")
+  const [email,setEmail] = useState("")
+  const [password,setPassword] = useState("")
+  const [backdrop,setBackdrop] = useState(false)
+
   let navigate = useNavigate();
+
+  useEffect(() => {
+    var partnerInfoString = localStorage.getItem("partner")
+    var partnerInfo = JSON.parse(partnerInfoString)
+
+    
+  },[])
+  const handleSubmit = async (e) => {
+    var partnerInfoString = localStorage.getItem("admin")
+    var partnerInfo = JSON.parse(partnerInfoString)
+    setBackdrop(true)
+    const data = {username:username,email:email,password:password}
+    await courtena.post("/auth/register-partner/",{...data},{
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Accept': '*/*',
+        'Authorization': partnerInfo.token
+    }
+    }).then((response) => {
+      console.log(response.data)
+      if(response.data.success){
+        setBackdrop(false)
+        setSuccess(true)
+        setSuccessMessage(response.data.message)
+      }else{
+        setBackdrop(false)
+        setError(true)
+        setErrorMessage(response.data.message)
+      }
+      
+    }).catch(err => console.log(err.message));
+
+  }
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -60,28 +101,23 @@ function AddPartners() {
           {/* {error ? <SoftAlert color="error" dismissible onClick={() => setError(false)} > {errorMessage}</SoftAlert> : null} */}
           {/* {success ? <SoftAlert color="success" dismissible onClick={() => setSuccess(false)} > {successMessage}</SoftAlert> : null} */}
           <Grid container spacing={2}>
-                <Grid item md={6}>
+                <Grid item xs={12} md={6} xl={4}>
                 <SoftBox mb={2}>
-              <SoftInput name="username" onChange={(val) => setUsername(val.target.value)} type="text" placeholder="Username" />
-            </SoftBox>
+                    <SoftInput name="username" value={username}  onChange={(val) => setUsername(val.target.value)} type="text" placeholder="Username" />
+                </SoftBox>
                 </Grid>
-                <Grid item md={6}>
+                <Grid item xs={12} md={6} xl={4}>
                 <SoftBox mb={2}>
-              <SoftInput name="username" onChange={(val) => setUsername(val.target.value)} type="text" placeholder="Username" />
-            </SoftBox>
+                    <SoftInput name="email" value={email} onChange={(val) => setEmail(val.target.value)} type="text" placeholder="Email" />
+                </SoftBox>
                 </Grid>
-                <Grid item md={6}>
+                <Grid item xs={12} md={6} xl={4}>
                 <SoftBox mb={2}>
-              <SoftInput name="username" onChange={(val) => setUsername(val.target.value)} type="text" placeholder="Username" />
-            </SoftBox>
-                </Grid>
-                <Grid item md={6}>
-                <SoftBox mb={2}>
-              <SoftInput name="username" onChange={(val) => setUsername(val.target.value)} type="text" placeholder="Username" />
-            </SoftBox>
+                    <SoftInput name="password" value={password} onChange={(val) => setPassword(val.target.value)} type="password" placeholder="Password" />
+                </SoftBox>
                 </Grid>
           </Grid>
-
+          
             <SoftBox mt={4} mb={1}>
               <SoftButton onClick={() => handleSubmit()} variant="gradient" color="dark" fullWidth>
                 Save
@@ -89,6 +125,11 @@ function AddPartners() {
             </SoftBox>
 
           </SoftBox>
+          <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={backdrop}>
+        <CircularProgress color="inherit" />
+        </Backdrop>
         </SoftBox>
           </Card>
         </SoftBox>
@@ -99,4 +140,4 @@ function AddPartners() {
   );
 }
 
-export default AddPartners;
+export default AddPartner;

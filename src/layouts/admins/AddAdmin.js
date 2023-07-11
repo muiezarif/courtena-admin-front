@@ -40,11 +40,10 @@ import courtena from "api/courtena";
 // import OpeningHours from "./components/OpeningHours";
 import "../../global.css"
 import { ArrowDropDown } from "@mui/icons-material";
-function AddSubscription() {
-  const [name,setName] = useState("")
-  const [tier,setTier] = useState("")
-  const [description,setDescription] = useState("")
-  const [price,setPrice] = useState("")
+function AddAdmin() {
+  const [username,setUsername] = useState("")
+  const [email,setEmail] = useState("")
+  const [password,setPassword] = useState("")
   const [backdrop,setBackdrop] = useState(false)
 
   let navigate = useNavigate();
@@ -59,8 +58,8 @@ function AddSubscription() {
     var partnerInfoString = localStorage.getItem("admin")
     var partnerInfo = JSON.parse(partnerInfoString)
     setBackdrop(true)
-    const data = {name:name,price:price,description:description,tier:tier}
-    await courtena.post("/admin/subscriptions/create/",{...data},{
+    const data = {username:username,email:email,password:password}
+    await courtena.post("/auth/register-admin/",{...data},{
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
         'Accept': '*/*',
@@ -90,7 +89,7 @@ function AddSubscription() {
           <Card> 
           <SoftBox p={3} mb={1} textAlign="center">
           <SoftTypography variant="h5" fontWeight="medium">
-            Subscription Info
+            Admin Info
           </SoftTypography>
         </SoftBox>
         {/* <SoftBox mb={2}>
@@ -104,22 +103,17 @@ function AddSubscription() {
           <Grid container spacing={2}>
                 <Grid item xs={12} md={6} xl={4}>
                 <SoftBox mb={2}>
-                    <SoftInput name="name" value={name}  onChange={(val) => setName(val.target.value)} type="text" placeholder="Name" />
+                    <SoftInput name="username" value={username}  onChange={(val) => setUsername(val.target.value)} type="text" placeholder="Username" />
                 </SoftBox>
                 </Grid>
                 <Grid item xs={12} md={6} xl={4}>
                 <SoftBox mb={2}>
-                    <SoftInput name="tier" value={tier}  onChange={(val) => setTier(val.target.value)} type="text" placeholder="Tier" />
+                    <SoftInput name="email" value={email} onChange={(val) => setEmail(val.target.value)} type="text" placeholder="Email" />
                 </SoftBox>
                 </Grid>
                 <Grid item xs={12} md={6} xl={4}>
                 <SoftBox mb={2}>
-                    <SoftInput name="price" value={price} onChange={(val) => setPrice(val.target.value)} type="number" placeholder="Price (SAR)" />
-                </SoftBox>
-                </Grid>
-                <Grid item xs={12} md={6} xl={4}>
-                <SoftBox mb={2}>
-                    <SoftInput name="description" value={description} onChange={(val) => setDescription(val.target.value)} type="text" placeholder="Description" />
+                    <SoftInput name="password" value={password} onChange={(val) => setPassword(val.target.value)} type="password" placeholder="Password" />
                 </SoftBox>
                 </Grid>
           </Grid>
@@ -146,4 +140,4 @@ function AddSubscription() {
   );
 }
 
-export default AddSubscription;
+export default AddAdmin;

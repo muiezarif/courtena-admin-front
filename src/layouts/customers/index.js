@@ -27,17 +27,60 @@ import Footer from "examples/Footer";
 import Table from "examples/Tables/Table";
 
 // Data
-import partnersTableData from "layouts/partners/data/partnersTableData";
-import projectsTableData from "layouts/tables/data/projectsTableData";
-import { Grid, Icon } from "@mui/material";
+// import partnersTableData from "layouts/partners/data/partnersTableData";
+// import projectsTableData from "layouts/tables/data/projectsTableData";
+import { Chip, Grid, Icon } from "@mui/material";
 import SoftButton from "components/SoftButton";
 // import partnersTableData from "./data/partnersTableData";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import courtena from "api/courtena";
 
 function Customers() {
-  const { columns, rows } = partnersTableData;
-  const { columns: prCols, rows: prRows } = projectsTableData;
+  const [customers,setCustomers] = useState()
+  // const { columns, rows } = partnersTableData;
+  // const { columns: prCols, rows: prRows } = projectsTableData;
   let navigate = useNavigate();
+  const partnersTableData = {
+    columns: [
+      { name: "name", align: "center" },
+      { name: "phone", align: "center" },
+      { name: "email", align: "center" },
+      { name: "country", align: "center" },
+      { name: "city", align: "center" },
+    ],
+  };
+const { columns } = partnersTableData;
+  const getCustomers = async() => {
+    var partnerInfoString = localStorage.getItem("admin")
+    var partnerInfo = JSON.parse(partnerInfoString)
+    await courtena.get("/admin/get-customers",{
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Accept': '*/*',
+        'Authorization': partnerInfo.token
+    }
+    }).then((res) => {
+      console.log(res.data)
+      let newCustomers = []
+        res.data.result.map((item) => {
+          newCustomers.push({
+            name:(<Chip label={item.username}/>),
+            phone:(<Chip label={item.phone}/>),
+            email:(<Chip label={item.email}/>),
+            country:(<Chip label={item.country}/>),
+            city:(<Chip label={item.city}/>),
+        })
+        })
+        setCustomers(newCustomers)
+      
+    }).catch((err) => {
+
+    })
+  }
+  useEffect(() => {
+    getCustomers()
+  },[])
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -66,7 +109,7 @@ function Customers() {
                 },
               }}
             >
-              <Table columns={columns} rows={rows} />
+              <Table columns={columns} rows={customers} />
             </SoftBox>
           </Card>
         </SoftBox>

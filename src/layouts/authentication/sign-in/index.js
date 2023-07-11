@@ -115,7 +115,7 @@ function SignIn(props) {
             sign in
           </SoftButton>
         </SoftBox>
-        <SoftBox mt={3} textAlign="center">
+        {/* <SoftBox mt={3} textAlign="center">
           
             <SoftTypography
               component={Link}
@@ -129,8 +129,8 @@ function SignIn(props) {
               Forgot Password ?
             </SoftTypography>
           
-        </SoftBox>
-        <SoftBox mt={3} textAlign="center">
+        </SoftBox> */}
+        {/* <SoftBox mt={3} textAlign="center">
           <SoftTypography variant="button" color="text" fontWeight="regular">
             Don&apos;t have an account?{" "}
             <SoftTypography
@@ -145,7 +145,7 @@ function SignIn(props) {
               Sign up
             </SoftTypography>
           </SoftTypography>
-        </SoftBox>
+        </SoftBox> */}
       </SoftBox>
     </CoverLayout>
   );

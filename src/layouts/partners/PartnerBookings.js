@@ -33,33 +33,37 @@ import Table from "examples/Tables/Table";
 import { Avatar, Backdrop, Chip, CircularProgress, Grid, Icon } from "@mui/material";
 import SoftButton from "components/SoftButton";
 // import partnersTableData from "./data/partnersTableData";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect,useState } from "react";
 import courtena from "api/courtena";
 import SoftAvatar from "components/SoftAvatar";
 import SoftBadge from "components/SoftBadge";
 import { DeleteForeverOutlined, EditOutlined,ViewAgenda,EyeArrowLeft } from "@mui/icons-material";
 import { red } from "@mui/material/colors";
-function Subscriptions() {
-    const [subscriptions,setSubscriptions] = useState([])
+function PartnerBookings() {
+    const [bookings,setBookings] = useState([])
     const [backdrop,setBackdrop] = useState(false)
     let navigate = useNavigate();
+    let location = useLocation();
     const partnersTableData = {
-        columns: [
-          { name: "name", align: "center" },
-          { name: "tier", align: "center" },
-          { name: "price", align: "center" },
-          { name: "action", align: "center" },
-        ],
-      };
-  const { columns } = partnersTableData;
+      columns: [
+        { name: "customer", align: "center" },
+        { name: "venue", align: "center" },
+        { name: "court", align: "center" },
+        { name: "duration", align: "center" },
+        { name: "date", align: "center" },
+        { name: "payment", align: "center" },
+        { name: "payment_status", align: "center" },
+      ],
+    };
+    const { columns } = partnersTableData;
 
-      async function getSubscriptions (){
+      async function getSports (){
         var partnerInfoString = localStorage.getItem("admin")
         var partnerInfo = JSON.parse(partnerInfoString)
         setBackdrop(true)
         // const data = {name:name,city:city,address:address,description:description,cheapestPrice:price,venuePhone:contactNum,postalCode:1234,amenities:{cafeteria:cafeteria,changeRoom:changingRoom,disabledAccess:disabledAccess,freeParking:freeParking,lockers:lockers,materialRenting:materialRenting,privateParking:privateParking,restaurant:restaurant,snackbar:snackbar,store:store,vendingMachine:vendingMachine,wifi:wifi},timing:{mondayOn:mondayOpen,mondayFrom:mondayFrom,mondayTo:mondayTo,tuesdayOn:tuesdayOpen,tuesdayFrom:tuesdayFrom,tuesdayTo:tuesdayTo,wedOn:wednesdayOpen,wedFrom:wedFrom,wedTo:wedTo,thursdayOn:thursdayOpen,thursdayFrom:thursdayFrom,thursdayTo:thursdayTo,fridayOn:fridayOpen,fridayFrom:friFrom,fridayTo:friTo,satOn:saturdayOpen,satFrom:satFrom,satTo:satTo,sunOn:sundayOpen,sunFrom:sunFrom,sunTo:sunTo,holidayOn:holidayOpen,holidayFrom:holidayFrom,holidayTo:holidayTo},partner:partnerInfo._id}
-        await courtena.get("/admin/subscriptions/",{
+        await courtena.get("/admin/get-partner-bookings/"+location.state.partnerId,{
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
             'Accept': '*/*',
@@ -69,63 +73,33 @@ function Subscriptions() {
           console.log(response.data)
           if(response.data.success){
             
-            let newSubscriptions = []
-            if(response.data.result){
+            let newBookings = []
             response.data.result.map((item) => {
-                console.log(item._id)
-                newSubscriptions.push({
-                    name:(<Chip label={item.name}/>),
-                    tier:(<Chip label={item.tier}/>),
-                    price:(<Chip label={item.price}/>),
-                    action: (
-                        <SoftBox>
-                            <Grid container spacing={2}>
-                                <Grid item xs={6} md={6} lg={6}>
-                            <SoftTypography
-                          component="a"
-                          variant="caption"
-                          color="secondary"
-                          fontWeight="medium"
-                            onClick={async() => {
-                                setBackdrop(true)
-                                await courtena.delete("/admin/subscriptions/delete/"+item._id,{
-                                    headers: {
-                                      'Content-Type': 'application/x-www-form-urlencoded',
-                                      'Accept': '*/*',
-                                      'Authorization': partnerInfo.token
-                                  }
-                                  }).then((response) => {
-                                    console.log(response.data)
-                                        if(response.data.success){
-                                            setBackdrop(false)
-                                            getSubscriptions()
-                                        }else{
-                                            setBackdrop(false)
-                                        }
-                                  }).catch((err) => {
-                                    console.log(err)
-                                  })
-                            }}
-                        >
-                          <DeleteForeverOutlined fontSize="medium" sx={{ color: 'red' }}/>
-                        </SoftTypography></Grid>
-                        {/* <Grid item xs={6} md={6} lg={6}>
-                        <SoftTypography
-                          component="a"
-                          variant="caption"
-                          color="secondary"
-                          fontWeight="medium"
-                            onClick={() => {navigate("/sports/edit-sport",{state:{sportId:item._id}})}}
-                        >
-                          <EditOutlined fontSize="medium" color="secondary"/>
-                        </SoftTypography></Grid> */}
-                        </Grid>
-                        </SoftBox>
-                        
-                      ),
-                })
-            })}
-            setSubscriptions(newSubscriptions)
+          newBookings.push({
+            customer:((
+              <SoftBox display="flex" alignItems="center" px={1} py={0.5}>
+                <SoftBox display="flex" flexDirection="column">
+                  <SoftTypography variant="button" fontWeight="medium">
+                    {item.customer.username}
+                  </SoftTypography>
+                  <SoftTypography variant="caption" color="secondary">
+                    {item.customer.email}
+                  </SoftTypography>
+                  <SoftTypography variant="caption" color="secondary">
+                    {item.customer.phone}
+                  </SoftTypography>
+                </SoftBox>
+              </SoftBox>
+            )),
+            venue:(<Chip label={item.venue.name}/>),
+            court:(<Chip label={item.court.title}/>),
+            duration:(<Chip label={item.booking.duration}/>),
+            date:(<Chip label={item.booking.date}/>),
+            payment:(<Chip label={item.booking.paymentAmount + "SAR"}/>),
+            payment_status:(<Chip label={item.booking.paymentStatus}/>),
+        })
+        })
+        setBookings(newBookings)
             setBackdrop(false)
             
           }else{
@@ -134,10 +108,13 @@ function Subscriptions() {
             setErrorMessage(response.data.message)
           }
           
-        }).catch(err => console.log(err));
+        }).catch(err => {
+          setBackdrop(false)
+          console.log(err)
+        });
       }
   useEffect( () => {
-    getSubscriptions()
+    getSports()
     // return
   // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
@@ -149,14 +126,14 @@ function Subscriptions() {
           <Card> 
             <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
                 <Grid item xs={6} md={6}>
-                    <SoftTypography variant="h6">Subscriptions Data</SoftTypography>
+                    <SoftTypography variant="h6">Partner`s Bookings Data</SoftTypography>
                 </Grid>
-              <Grid item xs={6} md={6}>
-                <SoftButton onClick={() => navigate("/subscriptions/add-subscription")} variant="gradient" color="dark">
+              {/* <Grid item xs={6} md={6}>
+                <SoftButton onClick={() => navigate("/partners/add-partner")} variant="gradient" color="dark">
                 <Icon sx={{ fontWeight: "bold" }}>add</Icon>
-                &nbsp;Add Subscription
+                &nbsp;Add Partner
                 </SoftButton>
-                </Grid>
+                </Grid> */}
             </SoftBox>
 
             <SoftBox
@@ -169,7 +146,7 @@ function Subscriptions() {
                 },
               }}
             >
-              <Table columns={columns} rows={subscriptions} />
+              <Table columns={columns} rows={bookings} />
               
             </SoftBox>
           </Card>
@@ -186,4 +163,4 @@ function Subscriptions() {
   );
 }
 
-export default Subscriptions;
+export default PartnerBookings;

@@ -17,3 +17,7 @@
     border-radius: 5px;
     border: 1px solid #a5d9f3;
 }
+
+.cursor-pointer{
+    cursor:pointer;
+}

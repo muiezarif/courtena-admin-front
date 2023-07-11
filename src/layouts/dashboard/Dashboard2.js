@@ -85,80 +85,78 @@ function Dashboard2() {
   );
   return (
     <DashboardLayout>
-      <>
-            <Sidenav
-              color={sidenavColor}
-              brand={brand}
-              brandName="Courtena"
-              routes={routes}
-              onMouseEnter={handleOnMouseEnter}
-              onMouseLeave={handleOnMouseLeave}
-            />
-            <Configurator />
-            {configsButton}
-          </>
+      
       <DashboardNavbar />
       <SoftBox py={3}>
         <SoftBox mb={3}>
           <Grid container spacing={3}>
-            <Grid onClick={() => {navigate("/categories")}} item xs={12} sm={6} xl={3}>
+            {/* <Grid className="cursor-pointer" onClick={() => {navigate("/categories")}} item xs={12} sm={6} xl={3}>
               <MiniStatisticsCard
                 title={{ text: "Categories" }}
-                icon={{ color: "", component: "" }}
+                icon={{ color: "info", component: "category" }}
+                
+              />
+            </Grid> */}
+            <Grid className="cursor-pointer" onClick={() => {navigate("/admins")}} item xs={12} sm={6} xl={3}>
+              <MiniStatisticsCard
+                title={{ text: "admins" }}
+                count=""
+                percentage={{ color: "", text: "" }}
+                icon={{ color: "info", component: "admin_panel_settings" }}
                 
               />
             </Grid>
-            <Grid onClick={() => {navigate("/partners")}} item xs={12} sm={6} xl={3}>
+            <Grid className="cursor-pointer" onClick={() => {navigate("/partners")}} item xs={12} sm={6} xl={3}>
               <MiniStatisticsCard
                 title={{ text: "Partners" }}
                 count=""
                 percentage={{ color: "", text: "" }}
-                icon={{ color: "", component: "" }}
+                icon={{ color: "info", component: "handshake" }}
                 
               />
             </Grid>
-            <Grid onClick={() => {navigate("/customers")}} item xs={12} sm={6} xl={3}>
+            <Grid className="cursor-pointer" onClick={() => {navigate("/customers")}} item xs={12} sm={6} xl={3}>
               <MiniStatisticsCard
                 title={{ text: "Customers" }}
                 count=""
                 percentage={{ color: "", text: "" }}
-                icon={{ color: "", component: "" }}
+                icon={{ color: "info", component: "group" }}
                 
               />
             </Grid>
-            <Grid onClick={() => {navigate("/bookings")}} item xs={12} sm={6} xl={3}>
+            <Grid className="cursor-pointer" onClick={() => {navigate("/bookings")}} item xs={12} sm={6} xl={3}>
               <MiniStatisticsCard
                 title={{ text: "Bookings" }}
                 count=""
                 percentage={{ color: "", text: "" }}
-                icon={{ color: "", component: "" }}
+                icon={{ color: "info", component: "book_online" }}
                 
               />
             </Grid>
-            <Grid onClick={() => {navigate("/settlements")}} item xs={12} sm={6} xl={3}>
+            <Grid className="cursor-pointer" onClick={() => {navigate("/settlements")}} item xs={12} sm={6} xl={3}>
               <MiniStatisticsCard
                 title={{ text: "Settlements" }}
                 count=""
                 percentage={{ color: "", text: "" }}
-                icon={{ color: "", component: "" }}
+                icon={{ color: "info", component: "request_quote" }}
                 
               />
             </Grid>
-            <Grid onClick={() => {navigate("/subscriptions")}} item xs={12} sm={6} xl={3}>
+            <Grid className="cursor-pointer" onClick={() => {navigate("/subscriptions")}} item xs={12} sm={6} xl={3}>
               <MiniStatisticsCard
                 title={{ text: "Subscriptions" }}
                 count=""
                 percentage={{ color: "", text: "" }}
-                icon={{ color: "", component: "" }}
+                icon={{ color: "info", component: "card_membership" }}
                 
               />
             </Grid>
-            <Grid onClick={() => {navigate("/reports")}} item xs={12} sm={6} xl={3}>
+            <Grid className="cursor-pointer" onClick={() => {navigate("/reports")}} item xs={12} sm={6} xl={3}>
               <MiniStatisticsCard
                 title={{ text: "Reports" }}
                 count=""
                 percentage={{ color: "", text: "" }}
-                icon={{ color: "", component: "" }}
+                icon={{ color: "info", component: "assessment" }}
                 
               />
             </Grid>

@@ -18,16 +18,31 @@ import SpaceShip from "examples/Icons/SpaceShip";
 import CustomerSupport from "examples/Icons/CustomerSupport";
 import CreditCard from "examples/Icons/CreditCard";
 import Cube from "examples/Icons/Cube";
-import Categories from "layouts/categories";
+// import Categories from "layouts/categories";
 import ForgotPassword from "layouts/authentication/forgotpassword";
 import Partners from "layouts/partners";
-import AddPartners from "layouts/partners/AddPartner";
+
 import Subscriptions from "layouts/subscriptions";
 import AddSubscription from "layouts/subscriptions/AddSubscription";
 import Customers from "layouts/customers";
 import Bookings from "layouts/bookings";
 import Settlements from "layouts/settlements";
 import Reports from "layouts/reports";
+import Sports from "layouts/sports";
+import AddSport from "layouts/sports/AddSport";
+import EditSport from "layouts/sports/EditSport";
+import AddPartner from "layouts/partners/AddPartner";
+import ViewPartnerDetails from "layouts/partners/ViewPartnerDetails";
+import PartnerSubscription from "layouts/partners/PartnerSubscription";
+import PartnerVenues from "layouts/partners/PartnerVenues";
+import PartnerCourts from "layouts/partners/PartnerCourts";
+import PartnerPricing from "layouts/partners/PartnerPricing";
+import PartnerSettlements from "layouts/partners/PartnerSettlements";
+import PartnerCustomerFeedbacks from "layouts/partners/PartnerCustomerFeedbacks";
+import { AdminPanelSettings } from "@mui/icons-material";
+import Admins from "layouts/admins";
+import AddAdmin from "layouts/admins/AddAdmin";
+import PartnerBookings from "layouts/partners/PartnerBookings";
 
 
 const allRoutes = [
@@ -42,11 +57,47 @@ const allRoutes = [
   },
   {
     type: "collapse",
-    name: "Categories",
-    key: "categories",
-    route: "/categories",
+    name: "Admins",
+    key: "admins",
+    route: "/admins",
+    icon: <AdminPanelSettings size="10px" />,
+    component: <Admins />,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Add Admin",
+    key: "add-admin",
+    route: "/admins/add-admin",
+    icon: <AdminPanelSettings size="10px" />,
+    component: <AddAdmin />,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Sports",
+    key: "sports",
+    route: "/sports",
     icon: <Shop size="12px" />,
-    component: <Categories />,
+    component: <Sports />,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Add Sport",
+    key: "add-sport",
+    route: "/sports/add-sport",
+    icon: <Shop size="12px" />,
+    component: <AddSport />,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Edit Sport",
+    key: "edit-sport",
+    route: "/sports/edit-sport",
+    icon: <Shop size="12px" />,
+    component: <EditSport />,
     noCollapse: true,
   },
   {
@@ -60,11 +111,83 @@ const allRoutes = [
   },
   {
     type: "collapse",
-    name: "AddPartners",
-    key: "addpartners",
-    route: "/partners/add-partners",
+    name: "Add Partners",
+    key: "partners/add-partners",
+    route: "/partners/add-partner",
     icon: <Shop size="12px" />,
-    component: <AddPartners />,
+    component: <AddPartner />,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Partner Details",
+    key: "partners/partners-details",
+    route: "/partners/partner-details",
+    icon: <Shop size="12px" />,
+    component: <ViewPartnerDetails />,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Partner Subscription",
+    key: "partner-subscription",
+    route: "/partners/partner-details/subscription",
+    icon: <Shop size="12px" />,
+    component: <PartnerSubscription />,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Partner Venues",
+    key: "partner-venues",
+    route: "/partners/partner-details/venues",
+    icon: <Shop size="12px" />,
+    component: <PartnerVenues />,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Partner Courts",
+    key: "partner-courts",
+    route: "/partners/partner-details/courts",
+    icon: <Shop size="12px" />,
+    component: <PartnerCourts />,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Partner Bookings",
+    key: "partner-bookings",
+    route: "/partners/partner-details/bookings",
+    icon: <Shop size="12px" />,
+    component: <PartnerBookings />,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Partner Pricing",
+    key: "partner-pricing",
+    route: "/partners/partner-details/pricing",
+    icon: <Shop size="12px" />,
+    component: <PartnerPricing />,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Partner Settlements",
+    key: "partner-settlements",
+    route: "/partners/partner-details/settlements",
+    icon: <Shop size="12px" />,
+    component: <PartnerSettlements />,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Partner Customer Feedback",
+    key: "partner-customer-feedbacks",
+    route: "/partners/partner-details/customer-feedbacks",
+    icon: <Shop size="12px" />,
+    component: <PartnerCustomerFeedbacks />,
     noCollapse: true,
   },
   {

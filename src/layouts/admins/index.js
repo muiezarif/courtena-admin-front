@@ -40,26 +40,25 @@ import SoftAvatar from "components/SoftAvatar";
 import SoftBadge from "components/SoftBadge";
 import { DeleteForeverOutlined, EditOutlined,ViewAgenda,EyeArrowLeft } from "@mui/icons-material";
 import { red } from "@mui/material/colors";
-function Subscriptions() {
-    const [subscriptions,setSubscriptions] = useState([])
+function Admins() {
+    const [admins,setAdmins] = useState([])
     const [backdrop,setBackdrop] = useState(false)
     let navigate = useNavigate();
     const partnersTableData = {
         columns: [
-          { name: "name", align: "center" },
-          { name: "tier", align: "center" },
-          { name: "price", align: "center" },
+          { name: "username", align: "center" },
+          { name: "email", align: "center" },
           { name: "action", align: "center" },
         ],
       };
   const { columns } = partnersTableData;
 
-      async function getSubscriptions (){
+      async function getAdmins (){
         var partnerInfoString = localStorage.getItem("admin")
         var partnerInfo = JSON.parse(partnerInfoString)
         setBackdrop(true)
         // const data = {name:name,city:city,address:address,description:description,cheapestPrice:price,venuePhone:contactNum,postalCode:1234,amenities:{cafeteria:cafeteria,changeRoom:changingRoom,disabledAccess:disabledAccess,freeParking:freeParking,lockers:lockers,materialRenting:materialRenting,privateParking:privateParking,restaurant:restaurant,snackbar:snackbar,store:store,vendingMachine:vendingMachine,wifi:wifi},timing:{mondayOn:mondayOpen,mondayFrom:mondayFrom,mondayTo:mondayTo,tuesdayOn:tuesdayOpen,tuesdayFrom:tuesdayFrom,tuesdayTo:tuesdayTo,wedOn:wednesdayOpen,wedFrom:wedFrom,wedTo:wedTo,thursdayOn:thursdayOpen,thursdayFrom:thursdayFrom,thursdayTo:thursdayTo,fridayOn:fridayOpen,fridayFrom:friFrom,fridayTo:friTo,satOn:saturdayOpen,satFrom:satFrom,satTo:satTo,sunOn:sundayOpen,sunFrom:sunFrom,sunTo:sunTo,holidayOn:holidayOpen,holidayFrom:holidayFrom,holidayTo:holidayTo},partner:partnerInfo._id}
-        await courtena.get("/admin/subscriptions/",{
+        await courtena.get("/users/admins/",{
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
             'Accept': '*/*',
@@ -69,16 +68,15 @@ function Subscriptions() {
           console.log(response.data)
           if(response.data.success){
             
-            let newSubscriptions = []
+            let newAdmins = []
             if(response.data.result){
             response.data.result.map((item) => {
                 console.log(item._id)
-                newSubscriptions.push({
-                    name:(<Chip label={item.name}/>),
-                    tier:(<Chip label={item.tier}/>),
-                    price:(<Chip label={item.price}/>),
+                newAdmins.push({
+                    username:(<Chip label={item.username}/>),
+                    email:(<Chip label={item.email}/>),
                     action: (
-                        <SoftBox>
+                        <SoftBox className="cursor-pointer">
                             <Grid container spacing={2}>
                                 <Grid item xs={6} md={6} lg={6}>
                             <SoftTypography
@@ -88,7 +86,7 @@ function Subscriptions() {
                           fontWeight="medium"
                             onClick={async() => {
                                 setBackdrop(true)
-                                await courtena.delete("/admin/subscriptions/delete/"+item._id,{
+                                await courtena.delete("/users/admin/"+item._id+"/delete/",{
                                     headers: {
                                       'Content-Type': 'application/x-www-form-urlencoded',
                                       'Accept': '*/*',
@@ -98,7 +96,7 @@ function Subscriptions() {
                                     console.log(response.data)
                                         if(response.data.success){
                                             setBackdrop(false)
-                                            getSubscriptions()
+                                            getAdmins()
                                         }else{
                                             setBackdrop(false)
                                         }
@@ -125,7 +123,7 @@ function Subscriptions() {
                       ),
                 })
             })}
-            setSubscriptions(newSubscriptions)
+            setAdmins(newAdmins)
             setBackdrop(false)
             
           }else{
@@ -137,7 +135,7 @@ function Subscriptions() {
         }).catch(err => console.log(err));
       }
   useEffect( () => {
-    getSubscriptions()
+    getAdmins()
     // return
   // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
@@ -149,12 +147,12 @@ function Subscriptions() {
           <Card> 
             <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
                 <Grid item xs={6} md={6}>
-                    <SoftTypography variant="h6">Subscriptions Data</SoftTypography>
+                    <SoftTypography variant="h6">Admins Data</SoftTypography>
                 </Grid>
               <Grid item xs={6} md={6}>
-                <SoftButton onClick={() => navigate("/subscriptions/add-subscription")} variant="gradient" color="dark">
+                <SoftButton onClick={() => navigate("/admins/add-admin")} variant="gradient" color="dark">
                 <Icon sx={{ fontWeight: "bold" }}>add</Icon>
-                &nbsp;Add Subscription
+                &nbsp;Add Admin
                 </SoftButton>
                 </Grid>
             </SoftBox>
@@ -169,7 +167,7 @@ function Subscriptions() {
                 },
               }}
             >
-              <Table columns={columns} rows={subscriptions} />
+              <Table columns={columns} rows={admins} />
               
             </SoftBox>
           </Card>
@@ -186,4 +184,4 @@ function Subscriptions() {
   );
 }
 
-export default Subscriptions;
+export default Admins;

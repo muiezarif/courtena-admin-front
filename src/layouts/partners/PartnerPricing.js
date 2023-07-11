@@ -33,33 +33,34 @@ import Table from "examples/Tables/Table";
 import { Avatar, Backdrop, Chip, CircularProgress, Grid, Icon } from "@mui/material";
 import SoftButton from "components/SoftButton";
 // import partnersTableData from "./data/partnersTableData";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect,useState } from "react";
 import courtena from "api/courtena";
 import SoftAvatar from "components/SoftAvatar";
 import SoftBadge from "components/SoftBadge";
 import { DeleteForeverOutlined, EditOutlined,ViewAgenda,EyeArrowLeft } from "@mui/icons-material";
 import { red } from "@mui/material/colors";
-function Subscriptions() {
-    const [subscriptions,setSubscriptions] = useState([])
+function PartnerPricing() {
+    const [sports,setSports] = useState([])
     const [backdrop,setBackdrop] = useState(false)
     let navigate = useNavigate();
+    let location = useLocation()
     const partnersTableData = {
         columns: [
           { name: "name", align: "center" },
-          { name: "tier", align: "center" },
+          { name: "time_range", align: "center" },
           { name: "price", align: "center" },
-          { name: "action", align: "center" },
+
         ],
       };
   const { columns } = partnersTableData;
 
-      async function getSubscriptions (){
+      async function getSports (){
         var partnerInfoString = localStorage.getItem("admin")
         var partnerInfo = JSON.parse(partnerInfoString)
         setBackdrop(true)
         // const data = {name:name,city:city,address:address,description:description,cheapestPrice:price,venuePhone:contactNum,postalCode:1234,amenities:{cafeteria:cafeteria,changeRoom:changingRoom,disabledAccess:disabledAccess,freeParking:freeParking,lockers:lockers,materialRenting:materialRenting,privateParking:privateParking,restaurant:restaurant,snackbar:snackbar,store:store,vendingMachine:vendingMachine,wifi:wifi},timing:{mondayOn:mondayOpen,mondayFrom:mondayFrom,mondayTo:mondayTo,tuesdayOn:tuesdayOpen,tuesdayFrom:tuesdayFrom,tuesdayTo:tuesdayTo,wedOn:wednesdayOpen,wedFrom:wedFrom,wedTo:wedTo,thursdayOn:thursdayOpen,thursdayFrom:thursdayFrom,thursdayTo:thursdayTo,fridayOn:fridayOpen,fridayFrom:friFrom,fridayTo:friTo,satOn:saturdayOpen,satFrom:satFrom,satTo:satTo,sunOn:sundayOpen,sunFrom:sunFrom,sunTo:sunTo,holidayOn:holidayOpen,holidayFrom:holidayFrom,holidayTo:holidayTo},partner:partnerInfo._id}
-        await courtena.get("/admin/subscriptions/",{
+        await courtena.get("/partner/pricing/partner-pricings/"+location.state.partnerId,{
           headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
             'Accept': '*/*',
@@ -69,63 +70,18 @@ function Subscriptions() {
           console.log(response.data)
           if(response.data.success){
             
-            let newSubscriptions = []
+            let newSports = []
             if(response.data.result){
             response.data.result.map((item) => {
                 console.log(item._id)
-                newSubscriptions.push({
+                newSports.push({
                     name:(<Chip label={item.name}/>),
-                    tier:(<Chip label={item.tier}/>),
-                    price:(<Chip label={item.price}/>),
-                    action: (
-                        <SoftBox>
-                            <Grid container spacing={2}>
-                                <Grid item xs={6} md={6} lg={6}>
-                            <SoftTypography
-                          component="a"
-                          variant="caption"
-                          color="secondary"
-                          fontWeight="medium"
-                            onClick={async() => {
-                                setBackdrop(true)
-                                await courtena.delete("/admin/subscriptions/delete/"+item._id,{
-                                    headers: {
-                                      'Content-Type': 'application/x-www-form-urlencoded',
-                                      'Accept': '*/*',
-                                      'Authorization': partnerInfo.token
-                                  }
-                                  }).then((response) => {
-                                    console.log(response.data)
-                                        if(response.data.success){
-                                            setBackdrop(false)
-                                            getSubscriptions()
-                                        }else{
-                                            setBackdrop(false)
-                                        }
-                                  }).catch((err) => {
-                                    console.log(err)
-                                  })
-                            }}
-                        >
-                          <DeleteForeverOutlined fontSize="medium" sx={{ color: 'red' }}/>
-                        </SoftTypography></Grid>
-                        {/* <Grid item xs={6} md={6} lg={6}>
-                        <SoftTypography
-                          component="a"
-                          variant="caption"
-                          color="secondary"
-                          fontWeight="medium"
-                            onClick={() => {navigate("/sports/edit-sport",{state:{sportId:item._id}})}}
-                        >
-                          <EditOutlined fontSize="medium" color="secondary"/>
-                        </SoftTypography></Grid> */}
-                        </Grid>
-                        </SoftBox>
-                        
-                      ),
+                    time_range:(<Chip label={item.dateTime.startTime+"-"+item.dateTime.endTime}/>),
+                    price:(<Chip label={item.pricing[0].price+" SAR "+"-"+item.pricing[item.pricing.length-1].price+" SAR "}/>),
+                    
                 })
             })}
-            setSubscriptions(newSubscriptions)
+            setSports(newSports)
             setBackdrop(false)
             
           }else{
@@ -137,7 +93,7 @@ function Subscriptions() {
         }).catch(err => console.log(err));
       }
   useEffect( () => {
-    getSubscriptions()
+    getSports()
     // return
   // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
@@ -149,14 +105,14 @@ function Subscriptions() {
           <Card> 
             <SoftBox display="flex" justifyContent="space-between" alignItems="center" p={3}>
                 <Grid item xs={6} md={6}>
-                    <SoftTypography variant="h6">Subscriptions Data</SoftTypography>
+                    <SoftTypography variant="h6">Partner Pricings</SoftTypography>
                 </Grid>
-              <Grid item xs={6} md={6}>
-                <SoftButton onClick={() => navigate("/subscriptions/add-subscription")} variant="gradient" color="dark">
+              {/* <Grid item xs={6} md={6}>
+                <SoftButton onClick={() => navigate("/partners/add-partner")} variant="gradient" color="dark">
                 <Icon sx={{ fontWeight: "bold" }}>add</Icon>
-                &nbsp;Add Subscription
+                &nbsp;Add Partner
                 </SoftButton>
-                </Grid>
+                </Grid> */}
             </SoftBox>
 
             <SoftBox
@@ -169,7 +125,7 @@ function Subscriptions() {
                 },
               }}
             >
-              <Table columns={columns} rows={subscriptions} />
+              <Table columns={columns} rows={sports} />
               
             </SoftBox>
           </Card>
@@ -186,4 +142,4 @@ function Subscriptions() {
   );
 }
 
-export default Subscriptions;
+export default PartnerPricing;

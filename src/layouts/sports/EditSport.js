@@ -32,7 +32,7 @@ import Table from "examples/Tables/Table";
 import { Backdrop, Checkbox, CircularProgress, FormControl, FormControlLabel, FormGroup, Grid, Icon, InputLabel, MenuItem, Select, Switch,  } from "@mui/material";
 import SoftButton from "components/SoftButton";
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
 import SoftInput from "components/SoftInput";
 import { useEffect, useState } from "react";
 import { Dropzone, FileMosaic} from "@dropzone-ui/react"
@@ -40,27 +40,43 @@ import courtena from "api/courtena";
 // import OpeningHours from "./components/OpeningHours";
 import "../../global.css"
 import { ArrowDropDown } from "@mui/icons-material";
-function AddSubscription() {
+function EditSport() {
   const [name,setName] = useState("")
-  const [tier,setTier] = useState("")
-  const [description,setDescription] = useState("")
-  const [price,setPrice] = useState("")
   const [backdrop,setBackdrop] = useState(false)
-
   let navigate = useNavigate();
-
-  useEffect(() => {
-    var partnerInfoString = localStorage.getItem("partner")
+  let location = useLocation();
+  async function getSportDetails(){
+    var partnerInfoString = localStorage.getItem("admin")
     var partnerInfo = JSON.parse(partnerInfoString)
-
-    
+    await courtena.get("/sports/"+location.state.sportId,{
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Accept': '*/*',
+          'Authorization': partnerInfo.token
+      }
+      }).then((response) => {
+        console.log(response.data)
+        if(response.data.success){
+            setName(response.data.result.name)
+        }else{
+            
+        }
+      }).catch(err => {
+        
+        console.log(err)
+      })
+  }
+  useEffect(() => {
+    var partnerInfoString = localStorage.getItem("admin")
+    var partnerInfo = JSON.parse(partnerInfoString)
+    getSportDetails()
   },[])
   const handleSubmit = async (e) => {
     var partnerInfoString = localStorage.getItem("admin")
     var partnerInfo = JSON.parse(partnerInfoString)
     setBackdrop(true)
-    const data = {name:name,price:price,description:description,tier:tier}
-    await courtena.post("/admin/subscriptions/create/",{...data},{
+    const data = {name:name}
+    await courtena.put("/sports/"+location.state.sportId+"/update/",{...data},{
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
         'Accept': '*/*',
@@ -82,6 +98,9 @@ function AddSubscription() {
 
   }
 
+  
+
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -90,7 +109,7 @@ function AddSubscription() {
           <Card> 
           <SoftBox p={3} mb={1} textAlign="center">
           <SoftTypography variant="h5" fontWeight="medium">
-            Subscription Info
+            Sport Info
           </SoftTypography>
         </SoftBox>
         {/* <SoftBox mb={2}>
@@ -107,25 +126,10 @@ function AddSubscription() {
                     <SoftInput name="name" value={name}  onChange={(val) => setName(val.target.value)} type="text" placeholder="Name" />
                 </SoftBox>
                 </Grid>
-                <Grid item xs={12} md={6} xl={4}>
-                <SoftBox mb={2}>
-                    <SoftInput name="tier" value={tier}  onChange={(val) => setTier(val.target.value)} type="text" placeholder="Tier" />
-                </SoftBox>
-                </Grid>
-                <Grid item xs={12} md={6} xl={4}>
-                <SoftBox mb={2}>
-                    <SoftInput name="price" value={price} onChange={(val) => setPrice(val.target.value)} type="number" placeholder="Price (SAR)" />
-                </SoftBox>
-                </Grid>
-                <Grid item xs={12} md={6} xl={4}>
-                <SoftBox mb={2}>
-                    <SoftInput name="description" value={description} onChange={(val) => setDescription(val.target.value)} type="text" placeholder="Description" />
-                </SoftBox>
-                </Grid>
           </Grid>
           
             <SoftBox mt={4} mb={1}>
-              <SoftButton onClick={() => handleSubmit()} variant="gradient" color="dark" fullWidth>
+              <SoftButton onClick={() => handleSubmit()} variant="gradient" color="dark" >
                 Save
               </SoftButton>
             </SoftBox>
@@ -146,4 +150,4 @@ function AddSubscription() {
   );
 }
 
-export default AddSubscription;
+export default EditSport;

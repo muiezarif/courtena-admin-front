@@ -54,27 +54,38 @@ import SpaceShip from "examples/Icons/SpaceShip";
 import CustomerSupport from "examples/Icons/CustomerSupport";
 import CreditCard from "examples/Icons/CreditCard";
 import Cube from "examples/Icons/Cube";
-import Categories from "layouts/categories";
+// import Categories from "layouts/categories";
 import ForgotPassword from "layouts/authentication/forgotpassword";
 import Partners from "layouts/partners";
-
+import Sports from "layouts/sports";
+import { Handshake,Group,BookOnline,RequestQuote,CardMembership,Assessment,Scoreboard, AdminPanelSettings } from "@mui/icons-material";
+import Admins from "layouts/admins";
 const routes = [
   {
     type: "collapse",
     name: "Dashboard",
     key: "dashboard",
     route: "/dashboard",
-    icon: <Shop size="12px" />,
+    icon: <Shop size="10px" />,
     component: <Dashboard />,
     noCollapse: true,
   },
   {
     type: "collapse",
-    name: "Categories",
-    key: "categories",
-    route: "/categories",
-    icon: <Shop size="12px" />,
-    component: <Categories />,
+    name: "Admins",
+    key: "admins",
+    route: "/admins",
+    icon: <AdminPanelSettings size="10px" />,
+    component: <Admins />,
+    noCollapse: true,
+  },
+  {
+    type: "collapse",
+    name: "Sports",
+    key: "sports",
+    route: "/sports",
+    icon: <Scoreboard size="10px" />,
+    component: <Sports />,
     noCollapse: true,
   },
   {
@@ -82,7 +93,7 @@ const routes = [
     name: "Partners",
     key: "partners",
     route: "/partners",
-    icon: <Shop size="12px" />,
+    icon: <Handshake size="10px" />,
     component: <Partners />,
     noCollapse: true,
   },
@@ -91,7 +102,7 @@ const routes = [
     name: "Customers",
     key: "customers",
     route: "/customers",
-    icon: <Shop size="12px" />,
+    icon: <Group size="10px" />,
     component: <Dashboard />,
     noCollapse: true,
   },
@@ -100,7 +111,7 @@ const routes = [
     name: "Bookings",
     key: "bookings",
     route: "/bookings",
-    icon: <Shop size="12px" />,
+    icon: <BookOnline size="10px" />,
     component: <Dashboard />,
     noCollapse: true,
   },
@@ -109,7 +120,7 @@ const routes = [
     name: "Settlements",
     key: "settlements",
     route: "/settlements",
-    icon: <Shop size="12px" />,
+    icon: <RequestQuote size="10px" />,
     component: <Dashboard />,
     noCollapse: true,
   },
@@ -118,7 +129,7 @@ const routes = [
     name: "Subscriptions",
     key: "subscriptions",
     route: "/subscriptions",
-    icon: <Shop size="12px" />,
+    icon: <CardMembership size="10px" />,
     component: <Dashboard />,
     noCollapse: true,
   },
@@ -127,7 +138,7 @@ const routes = [
     name: "Reports",
     key: "reports",
     route: "/reports",
-    icon: <Shop size="12px" />,
+    icon: <Assessment size="10px" />,
     component: <Dashboard />,
     noCollapse: true,
   },

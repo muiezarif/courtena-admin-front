@@ -36,13 +36,15 @@ import routes from "routes";
 import brand from "assets/images/courtena-logo-black-nobg.png";
 import Sidenav from "examples/Sidenav";
 import Configurator from "examples/Configurator";
-function Categories() {
+import { useNavigate,useLocation } from "react-router-dom";
+function ViewPartnerDetails() {
   const { size } = typography;
   const { chart, items } = reportsBarChartData;
   const [controller, dispatch] = useSoftUIController();
   const { miniSidenav, direction, layout, openConfigurator, sidenavColor } = controller;
   const [onMouseEnter, setOnMouseEnter] = useState(false);
-
+  let navigate = useNavigate();
+  let location = useLocation()
   // Open sidenav when mouse enter on mini sidenav
   const handleOnMouseEnter = () => {
     if (miniSidenav && !onMouseEnter) {
@@ -58,6 +60,9 @@ function Categories() {
       setOnMouseEnter(false);
     }
   };
+  useEffect(() => {
+    console.log(location.state.partnerId)
+  },[])
   const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
   const configsButton = (
     <SoftBox
@@ -84,117 +89,77 @@ function Categories() {
   );
   return (
     <DashboardLayout>
-      <>
-            <Sidenav
-              color={sidenavColor}
-              brand={brand}
-              brandName="Courtena"
-              routes={routes}
-              onMouseEnter={handleOnMouseEnter}
-              onMouseLeave={handleOnMouseLeave}
-            />
-            <Configurator />
-            {configsButton}
-          </>
+     
       <DashboardNavbar />
       <SoftBox py={3}>
         <SoftBox mb={3}>
           <Grid container spacing={3}>
-            <Grid item xs={12} sm={6} xl={3}>
+            <Grid className="cursor-pointer" onClick={() => {navigate("/partners/partner-details/subscription",{state:{partnerId:location.state.partnerId}})}} item xs={12} sm={6} xl={3}>
               <MiniStatisticsCard
-                title={{ text: "today's money" }}
-                count="$53,000"
-                percentage={{ color: "success", text: "+55%" }}
-                icon={{ color: "info", component: "paid" }}
+                title={{ text: "Subscription" }}
+                icon={{ color: "info", component: "card_membership" }}
+                
               />
             </Grid>
-            <Grid item xs={12} sm={6} xl={3}>
+            <Grid className="cursor-pointer" onClick={() => {navigate("/partners/partner-details/venues",{state:{partnerId:location.state.partnerId}})}} item xs={12} sm={6} xl={3}>
               <MiniStatisticsCard
-                title={{ text: "today's users" }}
-                count="2,300"
-                percentage={{ color: "success", text: "+3%" }}
-                icon={{ color: "info", component: "public" }}
+                title={{ text: "Venue" }}
+                icon={{ color: "info", component: "business" }}
+                
               />
             </Grid>
-            <Grid item xs={12} sm={6} xl={3}>
+            <Grid className="cursor-pointer" onClick={() => {navigate("/partners/partner-details/courts",{state:{partnerId:location.state.partnerId}})}} item xs={12} sm={6} xl={3}>
               <MiniStatisticsCard
-                title={{ text: "new clients" }}
-                count="+3,462"
-                percentage={{ color: "error", text: "-2%" }}
-                icon={{ color: "info", component: "emoji_events" }}
+                title={{ text: "Courts" }}
+                count=""
+                percentage={{ color: "", text: "" }}
+                icon={{ color: "info", component: "sports_tennis" }}
+                
               />
             </Grid>
-            <Grid item xs={12} sm={6} xl={3}>
+            <Grid className="cursor-pointer" onClick={() => {navigate("/partners/partner-details/bookings",{state:{partnerId:location.state.partnerId}})}} item xs={12} sm={6} xl={3}>
               <MiniStatisticsCard
-                title={{ text: "sales" }}
-                count="$103,430"
-                percentage={{ color: "success", text: "+5%" }}
-                icon={{
-                  color: "info",
-                  component: "shopping_cart",
-                }}
+                title={{ text: "Bookings" }}
+                count=""
+                percentage={{ color: "", text: "" }}
+                icon={{ color: "info", component: "book_online" }}
+                
               />
             </Grid>
+            <Grid className="cursor-pointer" onClick={() => {navigate("/partners/partner-details/pricing",{state:{partnerId:location.state.partnerId}})}} item xs={12} sm={6} xl={3}>
+              <MiniStatisticsCard
+                title={{ text: "Pricing" }}
+                count=""
+                percentage={{ color: "", text: "" }}
+                icon={{ color: "info", component: "price_change" }}
+                
+              />
+            </Grid>
+            <Grid className="cursor-pointer" onClick={() => {navigate("/partners/partner-details/settlements",{state:{partnerId:location.state.partnerId}})}} item xs={12} sm={6} xl={3}>
+              <MiniStatisticsCard
+                title={{ text: "Settlements" }}
+                count=""
+                percentage={{ color: "", text: "" }}
+                icon={{ color: "info", component: "request_quote" }}
+                
+              />
+            </Grid>
+            <Grid className="cursor-pointer" onClick={() => {navigate("/partners/partner-details/customer-feedbacks",{state:{partnerId:location.state.partnerId}})}} item xs={12} sm={6} xl={3}>
+              <MiniStatisticsCard
+                title={{ text: "Customer Feedback" }}
+                count=""
+                percentage={{ color: "", text: "" }}
+                icon={{ color: "info", component: "feedback" }}
+                
+              />
+            </Grid>
+
           </Grid>
         </SoftBox>
-        <SoftBox mb={3}>
-          <Grid container spacing={3}>
-            <Grid item xs={12} lg={7}>
-              <BuildByDevelopers />
-            </Grid>
-            <Grid item xs={12} lg={5}>
-              <WorkWithTheRockets />
-            </Grid>
-          </Grid>
-        </SoftBox>
-        <SoftBox mb={3}>
-          <Grid container spacing={3}>
-            <Grid item xs={12} lg={5}>
-              <ReportsBarChart
-                title="active users"
-                description={
-                  <>
-                    (<strong>+23%</strong>) than last week
-                  </>
-                }
-                chart={chart}
-                items={items}
-              />
-            </Grid>
-            <Grid item xs={12} lg={7}>
-              <GradientLineChart
-                title="Sales Overview"
-                description={
-                  <SoftBox display="flex" alignItems="center">
-                    <SoftBox fontSize={size.lg} color="success" mb={0.3} mr={0.5} lineHeight={0}>
-                      <Icon className="font-bold">arrow_upward</Icon>
-                    </SoftBox>
-                    <SoftTypography variant="button" color="text" fontWeight="medium">
-                      4% more{" "}
-                      <SoftTypography variant="button" color="text" fontWeight="regular">
-                        in 2021
-                      </SoftTypography>
-                    </SoftTypography>
-                  </SoftBox>
-                }
-                height="20.25rem"
-                chart={gradientLineChartData}
-              />
-            </Grid>
-          </Grid>
-        </SoftBox>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6} lg={8}>
-            <Projects />
-          </Grid>
-          <Grid item xs={12} md={6} lg={4}>
-            <OrderOverview />
-          </Grid>
-        </Grid>
       </SoftBox>
       <Footer />
     </DashboardLayout>
   );
 }
 
-export default Categories;
+export default ViewPartnerDetails;
